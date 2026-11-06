@@ -1,0 +1,1894 @@
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rudra's AI made by Victus - Autonomous Academic & Competitive Command Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    code, pre {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    .watermark-bg {
+      position: relative;
+    }
+    .watermark-bg::before {
+      content: "Rudra's AI made by Victus";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-12deg);
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.035);
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-white">
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <header class="border-b border-slate-800/90 bg-slate-900/90 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+      
+      <!-- Brand & Watermark Badge -->
+      <div class="flex items-center gap-3">
+        <div onclick="navigateTo('ask-center')" class="cursor-pointer flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center text-white font-black text-lg shadow-md shadow-emerald-500/20">
+            R
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-black text-sm tracking-tight text-white uppercase">Rudra's AI</span>
+              <span class="text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                made by Victus
+              </span>
+            </div>
+            <p id="navSubtext" class="text-[10px] text-slate-400 font-mono">ICSE • Class 8 • Ready</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Switcher Button (Ask or Quiz) -->
+      <div class="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800">
+        <button id="navBtnAsk" onclick="switchAskOrQuiz('ask-center')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-emerald-600 text-white shadow-sm shadow-emerald-600/40 cursor-pointer">
+          <i class="fa-solid fa-comments"></i>
+          <span>Ask</span>
+        </button>
+        <button id="navBtnQuiz" onclick="switchAskOrQuiz('quiz-arena')" class="px-4 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-slate-100 transition flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>Quiz / Answer</span>
+        </button>
+      </div>
+
+      <!-- Right Actions: Wallets, Three-Dots Menu, Settings -->
+      <div class="flex items-center gap-2">
+        <!-- Live Wallet Counter -->
+        <div onclick="navigateTo('subscription-store')" class="hidden sm:flex items-center gap-2 bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1 text-xs cursor-pointer hover:border-slate-700 transition" title="Points Wallet">
+          <span class="flex items-center gap-1 text-emerald-400 font-bold font-mono">
+            <i class="fa-solid fa-coins text-[10px]"></i> <span id="walletSchoolPoints">1,000</span>
+          </span>
+          <span class="text-slate-600">|</span>
+          <span class="flex items-center gap-1 text-cyan-400 font-bold font-mono">
+            <i class="fa-solid fa-trophy text-[10px]"></i> <span id="walletCompPoints">300</span>
+          </span>
+        </div>
+
+        <!-- Three-Dot Menu -->
+        <div class="relative">
+          <button id="threeDotBtn" onclick="toggleThreeDotMenu()" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 flex items-center justify-center text-slate-200 text-sm transition cursor-pointer">
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+          </button>
+          
+          <div id="threeDotDropdown" class="hidden absolute right-0 mt-2 w-56 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-2 z-50 text-xs space-y-1">
+            <div class="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-800">
+              Navigation &amp; Scope
+            </div>
+            <button onclick="navigateTo('board-selector')" class="w-full text-left px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-school text-emerald-400"></i> Boards &amp; Classes (6-12)
+            </button>
+            <button onclick="navigateTo('competitive-center')" class="w-full text-left px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-award text-cyan-400"></i> Competitive Exams Portal
+            </button>
+            <button onclick="navigateTo('syllabus-explorer')" class="w-full text-left px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-book-open text-amber-400"></i> Full Syllabus Index
+            </button>
+            <button onclick="navigateTo('formula-vault')" class="w-full text-left px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-square-root-variable text-purple-400"></i> Formula &amp; Grammar Rules
+            </button>
+            <button onclick="navigateTo('subscription-store')" class="w-full text-left px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-circle-arrow-up text-emerald-400"></i> Upgrade / Recharge Points
+            </button>
+            <button onclick="navigateTo('feedback-wall')" class="w-full text-left px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-comment-dots text-pink-400"></i> Student Feedback
+            </button>
+          </div>
+        </div>
+
+        <!-- User Profile Avatar & Settings Button -->
+        <button onclick="navigateTo('profile-settings')" class="flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-xs font-semibold transition cursor-pointer">
+          <div class="w-6 h-6 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs">
+            <i class="fa-solid fa-user-gear"></i>
+          </div>
+          <span class="hidden sm:inline text-slate-200">Settings</span>
+        </button>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= SUB-NAVIGATION BAR ================= -->
+  <nav class="border-b border-slate-800/70 bg-slate-950/60 overflow-x-auto custom-scroll">
+    <div class="max-w-7xl mx-auto px-4 flex items-center gap-1 py-1.5 text-xs whitespace-nowrap">
+      <button onclick="navigateTo('ask-center')" class="page-nav-btn px-3 py-1.5 rounded-lg font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 cursor-pointer" data-page="ask-center">1. School Ask Center</button>
+      <button onclick="navigateTo('quiz-arena')" class="page-nav-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 cursor-pointer" data-page="quiz-arena">2. School Quiz Arena</button>
+      <button onclick="navigateTo('competitive-center')" class="page-nav-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 cursor-pointer" data-page="competitive-center">3. Competitive Wing (JEE / NEET / UPSC / Banking)</button>
+      <button onclick="navigateTo('board-selector')" class="page-nav-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 cursor-pointer" data-page="board-selector">4. Board &amp; Class Studio</button>
+      <button onclick="navigateTo('syllabus-explorer')" class="page-nav-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 cursor-pointer" data-page="syllabus-explorer">5. Syllabus Explorer</button>
+      <button onclick="navigateTo('formula-vault')" class="page-nav-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 cursor-pointer" data-page="formula-vault">6. Formula &amp; Grammar Vault</button>
+      <button onclick="navigateTo('subscription-store')" class="page-nav-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 cursor-pointer" data-page="subscription-store">7. Pricing &amp; Points (₹50 / ₹200)</button>
+      <button onclick="navigateTo('profile-settings')" class="page-nav-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 cursor-pointer" data-page="profile-settings">8. Profile &amp; Settings</button>
+      <button onclick="navigateTo('feedback-wall')" class="page-nav-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 cursor-pointer" data-page="feedback-wall">9. Feedback &amp; Reviews</button>
+      <button onclick="navigateTo('system-architecture')" class="page-nav-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 cursor-pointer" data-page="system-architecture">10. Architecture</button>
+    </div>
+  </nav>
+
+  <!-- ================= MAIN BODY CONTAINER ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+    <!-- ================= PAGE 1: SCHOOL ASK CENTER ================= -->
+    <div id="page-ask-center" class="app-page space-y-4">
+      <div class="watermark-bg bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-2xl flex flex-col h-[75vh] relative overflow-hidden">
+        
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800 z-10">
+          <div>
+            <h2 class="text-base font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-sparkles text-emerald-400"></i> Autonomous Academic Dialogue (School Wing)
+            </h2>
+            <p class="text-xs text-slate-400">Class 6–12 • Physics, Chemistry, Maths, Biology &amp; English Grammar</p>
+          </div>
+          <span class="text-[11px] font-mono px-3 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+            Cost: 20 Pts / School Query
+          </span>
+        </div>
+
+        <div id="chatHistory" class="flex-1 overflow-y-auto space-y-4 py-4 pr-2 custom-scroll z-10 text-xs sm:text-sm">
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center font-bold text-xs text-white shrink-0">R</div>
+            <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl rounded-tl-none p-4 max-w-2xl text-slate-200 leading-relaxed shadow-lg">
+              <p class="font-bold text-emerald-400 mb-1">Rudra's AI made by Victus · Academic Chatbot Active</p>
+              Ask any ICSE, CBSE, or State Board problem across Class 6 to 12. Complete derivations, chemical stoichiometry, grammar transformations, and mathematics step-by-step.
+            </div>
+          </div>
+        </div>
+
+        <form onsubmit="handleSendQuery(event)" class="pt-4 border-t border-slate-800 z-10 flex gap-2">
+          <div class="relative flex-1">
+            <input type="text" id="chatInput" placeholder="Ask any question... e.g., 'Calculate mass of 0.2 moles of H2SO4' or 'Factorise 49x^2 - 64y^2'" class="w-full bg-slate-950 border border-slate-700/90 rounded-2xl pl-4 pr-12 py-3.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 shadow-inner">
+            <div class="absolute right-3.5 top-3.5 text-[10px] text-slate-500 font-mono hidden sm:inline">20 PTS</div>
+          </div>
+          <button type="submit" class="px-5 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 transition cursor-pointer flex items-center gap-2">
+            <span>Ask</span>
+            <i class="fa-solid fa-paper-plane text-xs"></i>
+          </button>
+        </form>
+
+      </div>
+    </div>
+
+    <!-- ================= PAGE 2: SCHOOL QUIZ ARENA ================= -->
+    <div id="page-quiz-arena" class="app-page hidden space-y-6">
+      
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
+          <div>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-graduation-cap text-cyan-400"></i> School Assessment &amp; Quiz Engine
+            </h2>
+            <p class="text-xs text-slate-400">Strictly filters by Board, Class Grade, and Subject with rotating question batches</p>
+          </div>
+          <button onclick="generateRandomQuizQuestion(true)" class="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition flex items-center gap-2 shadow-md shadow-cyan-600/30 cursor-pointer">
+            <i class="fa-solid fa-rotate"></i> Next / Change Question
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div>
+            <label class="block text-slate-400 mb-1 font-semibold">Target Board</label>
+            <select id="quizBoardSelect" onchange="generateRandomQuizQuestion(false)" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 cursor-pointer">
+              <option value="All">All Boards</option>
+              <option value="ICSE">ICSE / ISC</option>
+              <option value="CBSE">CBSE (NCERT)</option>
+              <option value="State Board">State Board</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1 font-semibold">Class Grade</label>
+            <select id="quizGradeSelect" onchange="generateRandomQuizQuestion(false)" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 cursor-pointer">
+              <option value="All">All Classes</option>
+              <option value="Class 8">Class 8</option>
+              <option value="Class 9">Class 9</option>
+              <option value="Class 10">Class 10</option>
+              <option value="Class 11">Class 11</option>
+              <option value="Class 12">Class 12</option>
+              <option value="Class 7">Class 7</option>
+              <option value="Class 6">Class 6</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1 font-semibold">Subject</label>
+            <select id="quizSubjectSelect" onchange="generateRandomQuizQuestion(false)" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 cursor-pointer">
+              <option value="All">All Subjects (Mixed)</option>
+              <option value="Chemistry">Chemistry (Mole Concept, Bonding)</option>
+              <option value="Physics">Physics (Kinematics, Electricity)</option>
+              <option value="Mathematics">Mathematics (Algebra, Geometry)</option>
+              <option value="Biology">Biology (Genetics, Cytology)</option>
+              <option value="English Grammar">English Grammar (Voice, Tenses)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1 font-semibold">Question Type</label>
+            <select id="quizTypeSelect" onchange="generateRandomQuizQuestion(false)" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 cursor-pointer">
+              <option value="All">All Types</option>
+              <option value="MCQ">Multiple Choice (MCQ)</option>
+              <option value="Subjective">Subjective / Numerical</option>
+              <option value="CaseBased">Case-Based Comprehension</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="quizQuestionCard" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl relative space-y-6">
+        <!-- Rendered via JavaScript -->
+      </div>
+
+    </div>
+
+    <!-- ================= PAGE 3: FULL COMPETITIVE EXAM COMMAND CENTER ================= -->
+    <div id="page-competitive-center" class="app-page hidden space-y-6">
+      
+      <!-- Top Banner & Exam Selector -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-800">
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="text-xl font-black text-white flex items-center gap-2">
+                <i class="fa-solid fa-award text-cyan-400"></i> All-India Competitive Examination Gateway
+              </h2>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                PRO COMPETITIVE WING
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Syllabus-locked questions: Banking has Quantitative Aptitude, UPSC has GS &amp; Polity, JEE has PCM.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-mono px-3 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 font-bold">
+              Balance: <span id="compWalletPill">300</span> Comp Points
+            </span>
+          </div>
+        </div>
+
+        <!-- 8 Exam Badges -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <button onclick="selectCompExam('JEE Main')" id="btnComp-JEE Main" class="comp-badge-btn p-3.5 rounded-2xl bg-cyan-950/40 border border-cyan-500 text-left transition cursor-pointer">
+            <div class="font-black text-sm text-cyan-400">JEE Main</div>
+            <div class="text-[11px] text-slate-300">Physics, Chemistry, Maths (NTA)</div>
+          </button>
+          <button onclick="selectCompExam('JEE Advanced')" id="btnComp-JEE Advanced" class="comp-badge-btn p-3.5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500 text-left transition cursor-pointer">
+            <div class="font-black text-sm text-cyan-400">JEE Advanced</div>
+            <div class="text-[11px] text-slate-400">IIT Entrance · Multi-Correct &amp; Integer</div>
+          </button>
+          <button onclick="selectCompExam('NEET UG')" id="btnComp-NEET UG" class="comp-badge-btn p-3.5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500 text-left transition cursor-pointer">
+            <div class="font-black text-sm text-emerald-400">NEET UG</div>
+            <div class="text-[11px] text-slate-400">Biology, Physics, Chemistry (NTA)</div>
+          </button>
+          <button onclick="selectCompExam('NEET PG / SS')" id="btnComp-NEET PG / SS" class="comp-badge-btn p-3.5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500 text-left transition cursor-pointer">
+            <div class="font-black text-sm text-emerald-400">NEET PG / SS</div>
+            <div class="text-[11px] text-slate-400">Clinical Pathology &amp; Medicine</div>
+          </button>
+          <button onclick="selectCompExam('UPSC CSE')" id="btnComp-UPSC CSE" class="comp-badge-btn p-3.5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500 text-left transition cursor-pointer">
+            <div class="font-black text-sm text-amber-400">UPSC CSE</div>
+            <div class="text-[11px] text-slate-400">Indian Polity, History, Economy &amp; GS</div>
+          </button>
+          <button onclick="selectCompExam('SSC CGL / CHSL')" id="btnComp-SSC CGL / CHSL" class="comp-badge-btn p-3.5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500 text-left transition cursor-pointer">
+            <div class="font-black text-sm text-purple-400">SSC CGL / CHSL</div>
+            <div class="text-[11px] text-slate-400">Quant Arithmetic, English &amp; Reasoning</div>
+          </button>
+          <button onclick="selectCompExam('Banking (IBPS/SBI)')" id="btnComp-Banking (IBPS/SBI)" class="comp-badge-btn p-3.5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500 text-left transition cursor-pointer">
+            <div class="font-black text-sm text-blue-400">Banking PO / Clerk</div>
+            <div class="text-[11px] text-slate-400">DI, Puzzles, Financial Math &amp; Quant</div>
+          </button>
+          <button onclick="selectCompExam('Railways (RRB NTPC)')" id="btnComp-Railways (RRB NTPC)" class="comp-badge-btn p-3.5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500 text-left transition cursor-pointer">
+            <div class="font-black text-sm text-rose-400">Railways RRB</div>
+            <div class="text-[11px] text-slate-400">General Science, Math &amp; Reasoning</div>
+          </button>
+        </div>
+
+        <!-- Sub-Tabs: 1. Practice Questions Arena | 2. Competitive Doubt Center | 3. High-Yield Materials -->
+        <div class="flex items-center gap-2 border-b border-slate-800 pb-3 text-xs">
+          <button id="compTabBtn-quiz" onclick="switchCompSubTab('quiz')" class="px-4 py-2 rounded-xl font-bold bg-cyan-600 text-white transition cursor-pointer flex items-center gap-2">
+            <i class="fa-solid fa-bullseye"></i> Practice Questions &amp; Tests
+          </button>
+          <button id="compTabBtn-doubt" onclick="switchCompSubTab('doubt')" class="px-4 py-2 rounded-xl font-semibold text-slate-400 hover:text-white bg-slate-800/80 transition cursor-pointer flex items-center gap-2">
+            <i class="fa-solid fa-circle-question text-cyan-400"></i> Doubt Clearance Center (-25 Pts)
+          </button>
+          <button id="compTabBtn-material" onclick="switchCompSubTab('material')" class="px-4 py-2 rounded-xl font-semibold text-slate-400 hover:text-white bg-slate-800/80 transition cursor-pointer flex items-center gap-2">
+            <i class="fa-solid fa-file-lines text-amber-400"></i> High-Yield Study Materials
+          </button>
+        </div>
+
+        <!-- SUB-TAB 1: COMPETITIVE PRACTICE ARENA -->
+        <div id="compSubView-quiz" class="space-y-6">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="text-sm font-bold text-slate-200">
+              Active Exam: <span id="compTargetBadge" class="text-cyan-400 font-extrabold">JEE Main</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="nextCompQuestion()" class="px-4 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow-md shadow-cyan-600/30 transition cursor-pointer flex items-center gap-1.5">
+                <i class="fa-solid fa-rotate"></i> Next / Change Question
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Competitive Question Display Card -->
+          <div id="compActiveQuestionCard" class="bg-slate-950 rounded-2xl border border-slate-800 p-6 space-y-6">
+            <!-- Injected via JavaScript -->
+          </div>
+        </div>
+
+        <!-- SUB-TAB 2: COMPETITIVE DOUBT CLEARANCE CENTER -->
+        <div id="compSubView-doubt" class="hidden space-y-4">
+          <div class="watermark-bg bg-slate-950 border border-slate-800 rounded-2xl p-6 flex flex-col h-[65vh] relative overflow-hidden">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800 z-10">
+              <div>
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                  <i class="fa-solid fa-microchip text-cyan-400"></i> Competitive Exam Doubt Solver
+                </h3>
+                <p id="compDoubtContext" class="text-[11px] text-slate-400">Specialized solver tuned to JEE Main syllabus</p>
+              </div>
+              <span class="text-[10px] font-mono px-3 py-1 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300">
+                Cost: 25 Comp Pts / Query
+              </span>
+            </div>
+
+            <!-- Chat Window -->
+            <div id="compDoubtHistory" class="flex-1 overflow-y-auto space-y-4 py-4 pr-2 custom-scroll z-10 text-xs sm:text-sm">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-500 flex items-center justify-center font-bold text-xs text-white shrink-0">R</div>
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-none p-4 max-w-2xl text-slate-200 leading-relaxed shadow-lg">
+                  <p class="font-bold text-cyan-400 mb-1">Competitive Doubt Solver Ready</p>
+                  Ask any targeted question for your selected examination. If you are in <strong>Banking</strong>, ask about DI/Syllogisms; if in <strong>UPSC</strong>, ask about Polity/Constitution; if in <strong>JEE/NEET</strong>, ask about derivations and mechanisms.
+                </div>
+              </div>
+            </div>
+
+            <!-- Search Bar -->
+            <form onsubmit="handleSendCompDoubt(event)" class="pt-3 border-t border-slate-800 z-10 flex gap-2">
+              <div class="relative flex-1">
+                <input type="text" id="compDoubtInput" placeholder="Ask your doubt according to the selected exam..." class="w-full bg-slate-900 border border-slate-700/80 rounded-2xl pl-4 pr-12 py-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 shadow-inner">
+                <div class="absolute right-3.5 top-3 text-[10px] text-cyan-400 font-mono hidden sm:inline">25 COMP PTS</div>
+              </div>
+              <button type="submit" class="px-5 py-3 rounded-2xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow-lg shadow-cyan-600/30 transition cursor-pointer flex items-center gap-1.5">
+                <span>Solve</span>
+                <i class="fa-solid fa-paper-plane text-xs"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- SUB-TAB 3: HIGH YIELD STUDY MATERIALS -->
+        <div id="compSubView-material" class="hidden space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            
+            <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+              <div class="text-cyan-400 font-bold border-b border-slate-800 pb-2">
+                <span>JEE (Physics &amp; Chemistry)</span>
+              </div>
+              <p class="text-slate-300">• Lorentz Force: $\vec{F} = q(\vec{E} + \vec{v} \times \vec{B})$</p>
+              <p class="text-slate-300">• Cyclotron Radius: $R = \frac{mv}{qB}$; Pitch $p = v_{\parallel} \times \frac{2\pi m}{qB}$</p>
+              <p class="text-slate-300">• Nernst Equation: $E_{\text{cell}} = E^\circ - \frac{0.0591}{n}\log Q$</p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+              <div class="text-emerald-400 font-bold border-b border-slate-800 pb-2">
+                <span>NEET (Biology &amp; Organic)</span>
+              </div>
+              <p class="text-slate-300">• Monohybrid Ratio: 3:1 (Phenotype), 1:2:1 (Genotype)</p>
+              <p class="text-slate-300">• Dihybrid Ratio: 9:3:3:1</p>
+              <p class="text-slate-300">• Hardy-Weinberg: $p^2 + 2pq + q^2 = 1$</p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+              <div class="text-blue-400 font-bold border-b border-slate-800 pb-2">
+                <span>Banking &amp; SSC (Quant &amp; Reasoning)</span>
+              </div>
+              <p class="text-slate-300">• 2-Year CI vs SI: $\Delta = P \times \left(\frac{R}{100}\right)^2$</p>
+              <p class="text-slate-300">• Work &amp; Efficiency: Time = Total Work / Efficiency</p>
+              <p class="text-slate-300">• Speed, Distance &amp; Time: $1 \text{ km/h} = \frac{5}{18} \text{ m/s}$</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= PAGE 4: BOARD & CLASS SELECTOR STUDIO ================= -->
+    <div id="page-board-selector" class="app-page hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+        
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div>
+            <h2 class="text-xl font-black text-white flex items-center gap-2">
+              <i class="fa-solid fa-school text-emerald-400"></i> Board &amp; Standard Configuration Studio
+            </h2>
+            <p class="text-xs text-slate-400">Lock in your educational curriculum for accurate question generation</p>
+          </div>
+          <button id="btnEditBoardConfig" onclick="toggleEditConfig()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition cursor-pointer">
+            <i class="fa-solid fa-pen-to-square"></i> Edit
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">1. Select Education Board</h3>
+            <div class="space-y-2">
+              <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-800 bg-slate-900 cursor-pointer">
+                <input type="radio" name="boardChoice" value="ICSE" checked class="accent-emerald-500 config-field cursor-pointer">
+                <div>
+                  <div class="font-bold text-sm text-slate-100">ICSE / ISC</div>
+                  <div class="text-[11px] text-slate-400">CISCE Curriculum</div>
+                </div>
+              </label>
+              <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-800 bg-slate-900 cursor-pointer">
+                <input type="radio" name="boardChoice" value="CBSE" class="accent-emerald-500 config-field cursor-pointer">
+                <div>
+                  <div class="font-bold text-sm text-slate-100">CBSE</div>
+                  <div class="text-[11px] text-slate-400">NCERT National Syllabus</div>
+                </div>
+              </label>
+              <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-800 bg-slate-900 cursor-pointer">
+                <input type="radio" name="boardChoice" value="State Board" class="accent-emerald-500 config-field cursor-pointer">
+                <div>
+                  <div class="font-bold text-sm text-slate-100">State Board</div>
+                  <div class="text-[11px] text-slate-400">State Academic Framework</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">2. Select Class / Standard</h3>
+            <div class="grid grid-cols-2 gap-2">
+              <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-900 flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="classChoice" value="Class 6" class="accent-emerald-500 config-field cursor-pointer">
+                <span class="text-xs font-bold">Class 6</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-900 flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="classChoice" value="Class 7" class="accent-emerald-500 config-field cursor-pointer">
+                <span class="text-xs font-bold">Class 7</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-900 flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="classChoice" value="Class 8" checked class="accent-emerald-500 config-field cursor-pointer">
+                <span class="text-xs font-bold text-emerald-400">Class 8</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-900 flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="classChoice" value="Class 9" class="accent-emerald-500 config-field cursor-pointer">
+                <span class="text-xs font-bold">Class 9</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-900 flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="classChoice" value="Class 10" class="accent-emerald-500 config-field cursor-pointer">
+                <span class="text-xs font-bold">Class 10</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-900 flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="classChoice" value="Class 11" class="accent-emerald-500 config-field cursor-pointer">
+                <span class="text-xs font-bold">Class 11</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-900 flex items-center gap-2 cursor-pointer col-span-2">
+                <input type="radio" name="classChoice" value="Class 12" class="accent-emerald-500 config-field cursor-pointer">
+                <span class="text-xs font-bold">Class 12</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">3. Current Status &amp; Scope</h3>
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-2">
+              <div class="flex justify-between">
+                <span class="text-slate-400">Selected Board:</span>
+                <span id="labelActiveBoard" class="font-bold text-emerald-400">ICSE</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Selected Standard:</span>
+                <span id="labelActiveGrade" class="font-bold text-cyan-400">Class 8</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Syllabus Sync:</span>
+                <span class="font-bold text-slate-200">Active Curriculum</span>
+              </div>
+            </div>
+            <button id="btnSaveBoardConfig" onclick="saveBoardConfig()" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/30 transition cursor-pointer">
+              <i class="fa-solid fa-floppy-disk"></i> Save Profile Settings
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= PAGE 5: SYLLABUS EXPLORER ================= -->
+    <div id="page-syllabus-explorer" class="app-page hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+        <div>
+          <h2 class="text-xl font-black text-white flex items-center gap-2">
+            <i class="fa-solid fa-book-open text-amber-400"></i> Complete Class 6–12 Curriculum Framework
+          </h2>
+          <p class="text-xs text-slate-400">Syllabus topics across Physics, Chemistry, Maths, Biology, and English Grammar</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 text-xs">
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
+            <div class="font-bold text-cyan-400 flex items-center gap-1.5 pb-2 border-b border-slate-800">
+              <i class="fa-solid fa-bolt"></i> Physics
+            </div>
+            <ul class="space-y-1.5 text-slate-400">
+              <li>• Motion &amp; Force</li>
+              <li>• Newton's Laws</li>
+              <li>• Work &amp; Energy</li>
+              <li>• Electricity &amp; Magnetism</li>
+              <li>• Light &amp; Optics</li>
+            </ul>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
+            <div class="font-bold text-emerald-400 flex items-center gap-1.5 pb-2 border-b border-slate-800">
+              <i class="fa-solid fa-flask"></i> Chemistry
+            </div>
+            <ul class="space-y-1.5 text-slate-400">
+              <li>• Mole Concept &amp; Avogadro</li>
+              <li>• Atomic Structure</li>
+              <li>• Chemical Bonding</li>
+              <li>• Acids, Bases &amp; Salts</li>
+              <li>• Chemical Reactions</li>
+            </ul>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
+            <div class="font-bold text-purple-400 flex items-center gap-1.5 pb-2 border-b border-slate-800">
+              <i class="fa-solid fa-calculator"></i> Mathematics
+            </div>
+            <ul class="space-y-1.5 text-slate-400">
+              <li>• Linear &amp; Quadratic Eq</li>
+              <li>• Factorisation</li>
+              <li>• Coordinate Geometry</li>
+              <li>• Trigonometry &amp; Mensuration</li>
+              <li>• Statistics</li>
+            </ul>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
+            <div class="font-bold text-green-400 flex items-center gap-1.5 pb-2 border-b border-slate-800">
+              <i class="fa-solid fa-dna"></i> Biology
+            </div>
+            <ul class="space-y-1.5 text-slate-400">
+              <li>• Cell Structure</li>
+              <li>• Plant Physiology</li>
+              <li>• Human Physiology</li>
+              <li>• Genetics &amp; Heredity</li>
+            </ul>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
+            <div class="font-bold text-amber-400 flex items-center gap-1.5 pb-2 border-b border-slate-800">
+              <i class="fa-solid fa-pen-nib"></i> English Grammar
+            </div>
+            <ul class="space-y-1.5 text-slate-400">
+              <li>• Active &amp; Passive Voice</li>
+              <li>• Direct &amp; Indirect Speech</li>
+              <li>• Prepositions</li>
+              <li>• Tenses &amp; Conditionals</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= PAGE 6: FORMULA VAULT ================= -->
+    <div id="page-formula-vault" class="app-page hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+        <div>
+          <h2 class="text-xl font-black text-white flex items-center gap-2">
+            <i class="fa-solid fa-square-root-variable text-purple-400"></i> Active Academic Formula &amp; Grammar Vault
+          </h2>
+          <p class="text-xs text-slate-400">Reference derivations and rules for school and competitive exams</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+            <div class="text-emerald-400 font-bold">Mole Concept Calculations</div>
+            <div class="text-slate-300 space-y-1">
+              <div>• Moles (n) = Given Mass (m) / Molar Mass (M)</div>
+              <div>• Particles = n × 6.022 × 10²³ (Avogadro Constant)</div>
+              <div>• Gas Volume at STP = n × 22.4 Litres (or 22,400 cm³)</div>
+              <div>• Vapor Density: Molar Mass = 2 × V.D.</div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+            <div class="text-cyan-400 font-bold">Kinematics &amp; Motion Equations</div>
+            <div class="text-slate-300 space-y-1">
+              <div>• v = u + at</div>
+              <div>• s = ut + ½ at²</div>
+              <div>• v² - u² = 2as</div>
+              <div>• Force F = m × a; Work W = F × s × cos(θ)</div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+            <div class="text-purple-400 font-bold">Algebra &amp; Geometry</div>
+            <div class="text-slate-300 space-y-1">
+              <div>• Roots x = [-b ± √(b² - 4ac)] / (2a)</div>
+              <div>• Discriminant D = b² - 4ac (D &gt; 0: real; D &lt; 0: imaginary)</div>
+              <div>• (a² - b²) = (a - b)(a + b)</div>
+              <div>• Distance = √[(x₂ - x₁)² + (y₂ - y₁)²]</div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+            <div class="text-amber-400 font-bold">English Grammar Core Rules</div>
+            <div class="text-slate-300 space-y-1">
+              <div>• Passive Voice: Obj + suitable 'to be' + Past Participle (V3)</div>
+              <div>• Indirect Speech: Present simple shifts to Past simple</div>
+              <div>• Conditionals: If + Past Perfect, would + have + V3</div>
+              <div>• Agreement: 'Either of the boys IS' (Singular verb)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= PAGE 7: SUBSCRIPTION & POINTS STORE ================= -->
+    <div id="page-subscription-store" class="app-page hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+        
+        <div class="text-center max-w-xl mx-auto space-y-2">
+          <h2 class="text-2xl font-black text-white">Subscription &amp; Points Economy</h2>
+          <p class="text-xs text-slate-400">Standard questions consume 20 Pts, competitive queries consume 25 Pts.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-6 rounded-3xl bg-slate-950 border border-slate-800 flex flex-col justify-between space-y-4">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-800 text-slate-300">Default Free</span>
+              <h3 class="text-xl font-bold text-white mt-2">Free Starter</h3>
+              <div class="text-3xl font-black text-white my-2">₹0 <span class="text-xs font-normal text-slate-400">/ forever</span></div>
+              <ul class="text-xs text-slate-400 space-y-2">
+                <li>• 1,000 School Points at signup</li>
+                <li>• 300 Free Competitive Points</li>
+                <li>• +300 points daily replenishment</li>
+                <li>• Full access to Class 6–12 &amp; Competitive questions</li>
+              </ul>
+            </div>
+            <button onclick="claimDailyBonus()" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 font-bold text-xs transition cursor-pointer">
+              Claim Daily +300 Points
+            </button>
+          </div>
+
+          <div class="p-6 rounded-3xl bg-slate-950 border-2 border-emerald-500/80 flex flex-col justify-between space-y-4 shadow-xl shadow-emerald-500/10 relative">
+            <span class="absolute -top-3 right-6 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-emerald-500 text-slate-950">Most Popular</span>
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">Normal Pro</span>
+              <h3 class="text-xl font-bold text-white mt-2">Normal 1,000 Pts</h3>
+              <div class="text-3xl font-black text-white my-2">₹50 <span class="text-xs font-normal text-slate-400">/ month</span></div>
+              <ul class="text-xs text-slate-400 space-y-2">
+                <li>• +1,000 instant high-priority points</li>
+                <li>• Full step-by-step arithmetic breakdown</li>
+                <li>• Unlimited subjective case tests</li>
+                <li>• Priority response processing</li>
+              </ul>
+            </div>
+            <button onclick="simulatePurchase('Normal 1,000 Pts', 1000, 50)" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 transition cursor-pointer">
+              Upgrade for ₹50 / Month
+            </button>
+          </div>
+
+          <div class="p-6 rounded-3xl bg-slate-950 border border-slate-800 flex flex-col justify-between space-y-4">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400">Extended Mega</span>
+              <h3 class="text-xl font-bold text-white mt-2">Extended 10,000 Pts</h3>
+              <div class="text-3xl font-black text-white my-2">₹200 <span class="text-xs font-normal text-slate-400">/ month</span></div>
+              <ul class="text-xs text-slate-400 space-y-2">
+                <li>• +10,000 points balance</li>
+                <li>• Uncapped competitive exam queries</li>
+                <li>• Advanced reasoning + full derivations</li>
+                <li>• Instant response rate</li>
+              </ul>
+            </div>
+            <button onclick="simulatePurchase('Extended 10,000 Pts', 10000, 200)" class="w-full py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow-lg shadow-cyan-600/30 transition cursor-pointer">
+              Upgrade for ₹200 / Month
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= PAGE 8: PROFILE & SETTINGS ================= -->
+    <div id="page-profile-settings" class="app-page hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+        
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div>
+            <h2 class="text-xl font-black text-white flex items-center gap-2">
+              <i class="fa-solid fa-user-gear text-emerald-400"></i> User Profile &amp; Intelligence Ledger
+            </h2>
+            <p class="text-xs text-slate-400">Active account details and transaction history</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Account Credentials</h3>
+            <div class="text-xs space-y-2">
+              <div>
+                <span class="text-slate-400 block">Identifier:</span>
+                <span id="userProfileEmail" class="font-bold text-white">Direct Access Session</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block">Active Status:</span>
+                <span class="text-emerald-400 font-bold">Direct Console Activated</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block">Competitive Allocation:</span>
+                <span class="text-cyan-400 font-bold">300 Initial Points</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block">Daily Replenish:</span>
+                <span class="text-slate-300">+300 Points every 24h</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 md:col-span-2">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Transaction &amp; Usage Ledger</h3>
+            <div id="transactionLedger" class="space-y-2 text-xs font-mono max-h-48 overflow-y-auto custom-scroll pr-1">
+              <div class="p-2 rounded bg-slate-900 border border-slate-800 flex justify-between">
+                <span>Account Initialized Bonus</span>
+                <span class="text-emerald-400">+1000 School Pts</span>
+              </div>
+              <div class="p-2 rounded bg-slate-900 border border-slate-800 flex justify-between">
+                <span>Competitive Sandbox Allocation</span>
+                <span class="text-cyan-400">+300 Comp Pts</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= PAGE 9: STUDENT FEEDBACK WALL ================= -->
+    <div id="page-feedback-wall" class="app-page hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+        <div>
+          <h2 class="text-xl font-black text-white flex items-center gap-2">
+            <i class="fa-solid fa-comment-dots text-pink-400"></i> Student Feedback &amp; Review Registry
+          </h2>
+          <p class="text-xs text-slate-400">Help refine Rudra's AI made by Victus for learners across all boards</p>
+        </div>
+
+        <form onsubmit="handlePostFeedback(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input type="text" id="feedbackName" required placeholder="Your Name" class="bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-pink-500">
+            <select id="feedbackCategory" class="bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none cursor-pointer">
+              <option value="Competitive Exam Practice">Competitive Exam Practice &amp; Doubts</option>
+              <option value="Chemistry / Mole Concept">Chemistry / Mole Concept Accuracy</option>
+              <option value="Physics Numerical Steps">Physics Numerical Steps</option>
+              <option value="General UX & Speed">General Speed &amp; Points Economy</option>
+            </select>
+          </div>
+          <textarea id="feedbackComment" required rows="3" placeholder="Share your experience or question feedback..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-pink-500"></textarea>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs transition cursor-pointer">
+            Post Student Review
+          </button>
+        </form>
+
+        <div class="border-t border-slate-800 pt-4 space-y-3">
+          <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Recent Reviews</h3>
+          <div id="feedbackList" class="space-y-2 text-xs">
+            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+              <div class="flex justify-between items-center mb-1">
+                <span class="font-bold text-cyan-400">Aarav (ICSE Class 8)</span>
+                <span class="text-slate-500 text-[10px]">Just now</span>
+              </div>
+              <p class="text-slate-300">The questions rotate smoothly now! Board filtering works perfectly for Class 8 maths and chemistry.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= PAGE 10: ARCHITECTURE SPECIFICATION ================= -->
+    <div id="page-system-architecture" class="app-page hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+        <div>
+          <h2 class="text-xl font-black text-white flex items-center gap-2">
+            <i class="fa-solid fa-server text-cyan-400"></i> Full Technical Architecture Specification
+          </h2>
+          <p class="text-xs text-slate-400">Single-file standalone web application engine diagram</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 space-y-3 leading-relaxed">
+          <div class="text-cyan-400 font-bold">// SYSTEM ARCHITECTURE DATA FLOW (DUAL ENGINE)</div>
+          <div>[User Direct Entry] ──&gt; Loaded Console ──&gt; [Wallets: 1000 School Pts | 300 Competitive Pts]</div>
+          <div>[Wing 1: School]    ──&gt; Ask (20 pts) &amp; Quiz (Strict Rotation by Board &amp; Grade)</div>
+          <div>[Wing 2: Comp Exam] ──&gt; Dedicated Subject Separation (Banking: Quant/DI; UPSC: GS/Polity; JEE: PCM)</div>
+          <div>[Doubt Solver]     ──&gt; 25 Comp Pts Per Competitive Query</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="border-t border-slate-800 bg-slate-950 py-5 text-xs text-slate-500 text-center mt-12">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div>
+        <span class="font-extrabold text-slate-400 uppercase tracking-wider">Rudra's AI</span>
+        <span class="text-slate-700">·</span>
+        <span class="text-cyan-400 font-bold">made by Victus</span>
+      </div>
+      <div>
+        Autonomous Learning Software for Class 6 to 12 &amp; Competitive Examinations
+      </div>
+    </div>
+  </footer>
+
+  <!-- Notification Toast -->
+  <div id="toastNotification" class="fixed top-5 right-5 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="px-4 py-3 rounded-xl bg-cyan-500 text-slate-950 text-xs font-bold flex items-center gap-2 shadow-2xl">
+      <i class="fa-solid fa-circle-check text-sm"></i>
+      <span id="toastMessage">Done!</span>
+    </div>
+  </div>
+
+  <!-- ================= APPLICATION ENGINE JAVASCRIPT ================= -->
+  <script>
+    // -------------------------------------------------------------
+    // App State: 1000 School Points & 300 Competitive Points
+    // -------------------------------------------------------------
+    const appState = {
+      user: {
+        email: "Direct Access Session",
+        isLoggedIn: true,
+        schoolPoints: 1000,
+        compPoints: 300,
+        activeBoard: "ICSE",
+        activeClass: "Class 8",
+        activeCompExam: "JEE Main",
+        isConfigLocked: true
+      },
+      transactions: [
+        { label: "Account Registration Gift", pts: "+1000 School Pts" },
+        { label: "Competitive Sandbox Allocation", pts: "+300 Comp Pts" }
+      ]
+    };
+
+    // -------------------------------------------------------------
+    // COMPREHENSIVE SCHOOL QUESTION REPOSITORY (Multi-grade / Multi-board)
+    // -------------------------------------------------------------
+    const SCHOOL_QUESTION_BANK = [
+      // --- CLASS 8 & 9 ICSE / CBSE CHEMISTRY (Mole Concept & Matter) ---
+      {
+        id: "SCH_CHEM_01",
+        board: "ICSE",
+        grade: "Class 9",
+        subject: "Chemistry",
+        type: "MCQ",
+        question: "Calculate the volume occupied by 4.4 g of Carbon Dioxide (CO₂) at STP. [Atomic masses: C = 12, O = 16]",
+        options: [
+          { text: "2.24 Litres", correct: true },
+          { text: "22.4 Litres", correct: false },
+          { text: "4.48 Litres", correct: false },
+          { text: "1.12 Litres", correct: false }
+        ],
+        solution: "1. Molar mass of CO₂ = 12 + 2(16) = 44 g/mol.\n2. Number of moles (n) = Mass / Molar mass = 4.4 g / 44 g/mol = 0.1 mol.\n3. Volume at STP = n × 22.4 L = 0.1 × 22.4 L = 2.24 Litres.",
+        trap: "Do not confuse volume at STP (22.4 L) with molar volume at room temperature (24 L)."
+      },
+      {
+        id: "SCH_CHEM_02",
+        board: "ICSE",
+        grade: "Class 8",
+        subject: "Chemistry",
+        type: "MCQ",
+        question: "What is the valency of Phosphate in the compound Calcium Phosphate [Ca₃(PO₄)₂]?",
+        options: [
+          { text: "3 (Trivalent)", correct: true },
+          { text: "2 (Divalent)", correct: false },
+          { text: "1 (Monovalent)", correct: false },
+          { text: "4 (Tetravalent)", correct: false }
+        ],
+        solution: "In Ca₃(PO₄)₂, by criss-cross rule: Ca has valency 2+ and (PO₄) group has valency 3-.",
+        trap: "Do not count the subscript 4 of oxygen as the radical valency."
+      },
+      {
+        id: "SCH_CHEM_03",
+        board: "CBSE",
+        grade: "Class 9",
+        subject: "Chemistry",
+        type: "Subjective",
+        question: "Calculate the mass of 0.5 moles of Water molecules (H₂O). [H=1, O=16]",
+        options: [],
+        solution: "Molar mass of H₂O = 2(1) + 16 = 18 g/mol.\nMass = Moles × Molar Mass = 0.5 × 18 = 9.0 grams.",
+        trap: "Ensure atomic mass of hydrogen is multiplied by 2."
+      },
+      {
+        id: "SCH_CHEM_04",
+        board: "State Board",
+        grade: "Class 10",
+        subject: "Chemistry",
+        type: "MCQ",
+        question: "Which gas is liberated when dilute Hydrochloric Acid reacts with Zinc granules?",
+        options: [
+          { text: "Hydrogen (H₂)", correct: true },
+          { text: "Oxygen (O₂)", correct: false },
+          { text: "Chlorine (Cl₂)", correct: false },
+          { text: "Carbon Dioxide (CO₂)", correct: false }
+        ],
+        solution: "Zn + 2HCl → ZnCl₂ + H₂↑. Hydrogen gas burns with a characteristic pop sound.",
+        trap: "Nitric acid (HNO₃) generally does not liberate H₂ because it is a strong oxidising agent; HCl does."
+      },
+
+      // --- MATHEMATICS (Algebra, Factorisation, Quadratic) ---
+      {
+        id: "SCH_MATH_01",
+        board: "ICSE",
+        grade: "Class 8",
+        subject: "Mathematics",
+        type: "MCQ",
+        question: "Factorise completely: 49x² - 64y².",
+        options: [
+          { text: "(7x - 8y)(7x + 8y)", correct: true },
+          { text: "(7x - 8y)²", correct: false },
+          { text: "(49x - 64y)(x + y)", correct: false },
+          { text: "(7x + 8y)²", correct: false }
+        ],
+        solution: "Using algebraic identity a² - b² = (a - b)(a + b):\n(7x)² - (8y)² = (7x - 8y)(7x + 8y).",
+        trap: "Never write (a - b)(a + b) as (a - b)²."
+      },
+      {
+        id: "SCH_MATH_02",
+        board: "ICSE",
+        grade: "Class 10",
+        subject: "Mathematics",
+        type: "MCQ",
+        question: "Find the discriminant of the quadratic equation 3x² - 5x + 2 = 0.",
+        options: [
+          { text: "D = 1 (Roots are real & rational)", correct: true },
+          { text: "D = -1 (Roots are imaginary)", correct: false },
+          { text: "D = 49 (Roots are irrational)", correct: false },
+          { text: "D = 0 (Roots are equal)", correct: false }
+        ],
+        solution: "a = 3, b = -5, c = 2.\nDiscriminant D = b² - 4ac = (-5)² - 4(3)(2) = 25 - 24 = 1.\nSince D > 0 and a perfect square, roots are real and rational.",
+        trap: "Squaring -5 gives +25, not -25."
+      },
+      {
+        id: "SCH_MATH_03",
+        board: "CBSE",
+        grade: "Class 8",
+        subject: "Mathematics",
+        type: "Subjective",
+        question: "Solve the linear equation for x: 5x - 7 = 2x + 8.",
+        options: [],
+        solution: "5x - 2x = 8 + 7\n3x = 15\nx = 15 / 3 = 5.",
+        trap: "Watch sign changes when transposing numbers across the equal sign."
+      },
+      {
+        id: "SCH_MATH_04",
+        board: "CBSE",
+        grade: "Class 10",
+        subject: "Mathematics",
+        type: "MCQ",
+        question: "If the radius of a circle is doubled, by what factor does its area increase?",
+        options: [
+          { text: "4 times", correct: true },
+          { text: "2 times", correct: false },
+          { text: "8 times", correct: false },
+          { text: "16 times", correct: false }
+        ],
+        solution: "Area A₁ = πr².\nWhen r' = 2r, A₂ = π(2r)² = 4πr² = 4A₁.",
+        trap: "Area depends on the square of the radius, whereas circumference doubles."
+      },
+
+      // --- PHYSICS (Kinematics, Force, Electricity) ---
+      {
+        id: "SCH_PHYS_01",
+        board: "ICSE",
+        grade: "Class 9",
+        subject: "Physics",
+        type: "MCQ",
+        question: "A train accelerates uniformly from 36 km/h to 72 km/h in 10 seconds. Find the acceleration.",
+        options: [
+          { text: "1.0 m/s²", correct: true },
+          { text: "3.6 m/s²", correct: false },
+          { text: "2.0 m/s²", correct: false },
+          { text: "0.5 m/s²", correct: false }
+        ],
+        solution: "u = 36 × (5/18) = 10 m/s.\nv = 72 × (5/18) = 20 m/s.\na = (v - u) / t = (20 - 10) / 10 = 1.0 m/s².",
+        trap: "Always convert km/h to m/s by multiplying with (5/18) before computing."
+      },
+      {
+        id: "SCH_PHYS_02",
+        board: "CBSE",
+        grade: "Class 8",
+        subject: "Physics",
+        type: "MCQ",
+        question: "If a force of 50 N acts over an area of 2 m², what is the pressure exerted?",
+        options: [
+          { text: "25 Pascals (N/m²)", correct: true },
+          { text: "100 Pascals", correct: false },
+          { text: "50 Pascals", correct: false },
+          { text: "10 Pascals", correct: false }
+        ],
+        solution: "Pressure = Force / Area = 50 N / 2 m² = 25 N/m² = 25 Pa.",
+        trap: "Ensure area is in square metres (m²), not cm²."
+      },
+      {
+        id: "SCH_PHYS_03",
+        board: "ICSE",
+        grade: "Class 10",
+        subject: "Physics",
+        type: "Subjective",
+        question: "State Ohm's Law and write its mathematical formula.",
+        options: [],
+        solution: "Ohm's Law: At constant physical conditions (like temperature), current passing through a conductor is directly proportional to potential difference across its ends: V = I × R.",
+        trap: "Do not omit the condition 'at constant temperature and physical dimensions'."
+      },
+
+      // --- BIOLOGY ---
+      {
+        id: "SCH_BIO_01",
+        board: "ICSE",
+        grade: "Class 10",
+        subject: "Biology",
+        type: "MCQ",
+        question: "What is the phenotypic ratio obtained in the F2 generation of a Mendelian monohybrid cross?",
+        options: [
+          { text: "3 : 1", correct: true },
+          { text: "1 : 2 : 1", correct: false },
+          { text: "9 : 3 : 3 : 1", correct: false },
+          { text: "1 : 1", correct: false }
+        ],
+        solution: "In a monohybrid cross (e.g. Tt × Tt), the phenotypic ratio is 3 Tall : 1 Dwarf (3:1). Genotypic ratio is 1:2:1.",
+        trap: "Phenotype refers to physical appearance (3:1), genotype to genetic makeup (1:2:1)."
+      },
+      {
+        id: "SCH_BIO_02",
+        board: "CBSE",
+        grade: "Class 8",
+        subject: "Biology",
+        type: "MCQ",
+        question: "Which organelle is universally known as the 'Powerhouse of the Cell'?",
+        options: [
+          { text: "Mitochondria", correct: true },
+          { text: "Ribosome", correct: false },
+          { text: "Golgi Apparatus", correct: false },
+          { text: "Lysosome", correct: false }
+        ],
+        solution: "Mitochondria generate cellular energy in the form of ATP through cellular respiration.",
+        trap: "Ribosomes are protein factories; lysosomes are suicide bags."
+      },
+
+      // --- ENGLISH GRAMMAR ---
+      {
+        id: "SCH_ENG_01",
+        board: "ICSE",
+        grade: "Class 8",
+        subject: "English Grammar",
+        type: "MCQ",
+        question: "Change into Passive Voice: 'The teacher praised the student.'",
+        options: [
+          { text: "The student was praised by the teacher.", correct: true },
+          { text: "The student is praised by the teacher.", correct: false },
+          { text: "The student had been praised by the teacher.", correct: false },
+          { text: "The student was being praised by the teacher.", correct: false }
+        ],
+        solution: "Past Simple Active ('praised') → was/were + past participle: 'The student was praised by the teacher.'",
+        trap: "Do not change past simple into past perfect."
+      },
+      {
+        id: "SCH_ENG_02",
+        board: "ICSE",
+        grade: "Class 9",
+        subject: "English Grammar",
+        type: "MCQ",
+        question: "Fill in the correct preposition: 'She has been living in this city _____ 2018.'",
+        options: [
+          { text: "since", correct: true },
+          { text: "for", correct: false },
+          { text: "from", correct: false },
+          { text: "at", correct: false }
+        ],
+        solution: "'Since' is used for a specific point in time (2018), while 'for' is used for a duration/period of time.",
+        trap: "Do not use 'for' with a specific calendar year."
+      }
+    ];
+
+    // -------------------------------------------------------------
+    // STRICTLY CATEGORIZED COMPETITIVE EXAMS REPOSITORY
+    // -------------------------------------------------------------
+    const COMP_QUESTIONS_REPOSITORY = [
+      // ================= 1. BANKING (IBPS / SBI PO & CLERK) =================
+      // Strictly Quantitative Aptitude, DI, Puzzles & Banking Awareness (NO PHYSICS!)
+      {
+        id: "BANK_01",
+        exam: "Banking (IBPS/SBI)",
+        subject: "Quantitative Aptitude",
+        format: "MCQ",
+        question: "A certain sum of money invested at 10% per annum compound interest (compounded annually) for 2 years yields ₹65 more than simple interest on the same sum. Find the principal sum.",
+        options: [
+          { text: "₹6,500", correct: true },
+          { text: "₹5,500", correct: false },
+          { text: "₹7,200", correct: false },
+          { text: "₹6,000", correct: false }
+        ],
+        solution: "Difference between CI and SI for 2 years = P × (R / 100)².\n65 = P × (10 / 100)² = P × (1 / 100)\nP = 65 × 100 = ₹6,500.",
+        trap: "This difference formula P*(R/100)² is valid exclusively for 2-year periods."
+      },
+      {
+        id: "BANK_02",
+        exam: "Banking (IBPS/SBI)",
+        subject: "Quantitative Aptitude",
+        format: "MCQ",
+        question: "Pipe A can fill a tank in 12 hours, and Pipe B can empty it in 18 hours. If both pipes are opened simultaneously in an empty cistern, in how many hours will it be filled?",
+        options: [
+          { text: "36 hours", correct: true },
+          { text: "24 hours", correct: false },
+          { text: "30 hours", correct: false },
+          { text: "15 hours", correct: false }
+        ],
+        solution: "Net work per hour = (1/12) - (1/18) = (3 - 2) / 36 = 1/36.\nTherefore, the tank will be filled in 36 hours.",
+        trap: "Remember that the emptying pipe performs negative work."
+      },
+      {
+        id: "BANK_03",
+        exam: "Banking (IBPS/SBI)",
+        subject: "Banking Awareness",
+        format: "MCQ",
+        question: "What is the statutory minimum percentage of net demand and time liabilities (NDTL) that commercial banks in India must maintain as liquid assets (cash, gold, approved securities)?",
+        options: [
+          { text: "Statutory Liquidity Ratio (SLR)", correct: true },
+          { text: "Cash Reserve Ratio (CRR)", correct: false },
+          { text: "Repo Rate", correct: false },
+          { text: "Reverse Repo Rate", correct: false }
+        ],
+        solution: "Statutory Liquidity Ratio (SLR) requires banks to hold reserves in gold, cash, or approved government bonds. CRR is held purely as cash with the RBI.",
+        trap: "CRR is kept exclusively with the RBI in cash, while SLR is maintained by banks themselves."
+      },
+
+      // ================= 2. UPSC CSE (Civil Services) =================
+      // Strictly Polity, History, Economy, Geography (NO ENGINEERING / THERMODYNAMICS!)
+      {
+        id: "UPSC_01",
+        exam: "UPSC CSE",
+        subject: "Indian Polity",
+        format: "MCQ",
+        question: "Consider the following statements regarding the 'Writ of Habeas Corpus' in the Indian Constitution:\n1. It can be issued against both public authorities and private individuals.\n2. It cannot be issued if the detention is executed by a competent court of law.\nWhich of the statements given above is/are correct?",
+        options: [
+          { text: "Both 1 and 2", correct: true },
+          { text: "1 only", correct: false },
+          { text: "2 only", correct: false },
+          { text: "Neither 1 nor 2", correct: false }
+        ],
+        solution: "Statement 1 is correct: Habeas Corpus can be issued against private individuals as well as public authorities.\nStatement 2 is correct: It does not lie when the detention is lawful or under the order of a competent judicial court.",
+        trap: "Mandamus cannot be issued against private persons, but Habeas Corpus can."
+      },
+      {
+        id: "UPSC_02",
+        exam: "UPSC CSE",
+        subject: "Economy",
+        format: "MCQ",
+        question: "Which of the following is the most appropriate measure to contain demand-pull inflation in an economy?",
+        options: [
+          { text: "Increasing the Policy Repo Rate by the Central Bank", correct: true },
+          { text: "Lowering the Cash Reserve Ratio (CRR)", correct: false },
+          { text: "Increasing Government Expenditure on subsidies", correct: false },
+          { text: "Purchasing government securities in the open market (OMO)", correct: false }
+        ],
+        solution: "Hike in Repo Rate increases borrowing costs, contracts credit supply, slows consumer demand, and curtails demand-pull inflation.",
+        trap: "Lowering CRR or buying securities injects liquidity, worsening demand-pull inflation."
+      },
+
+      // ================= 3. SSC CGL / CHSL =================
+      // Advanced Arithmetic, Algebra, Geometry & General Awareness
+      {
+        id: "SSC_01",
+        exam: "SSC CGL / CHSL",
+        subject: "Quantitative Aptitude",
+        format: "MCQ",
+        question: "If x + (1/x) = 5, what is the value of x² + (1/x²)?",
+        options: [
+          { text: "23", correct: true },
+          { text: "25", correct: false },
+          { text: "27", correct: false },
+          { text: "21", correct: false }
+        ],
+        solution: "Squaring both sides: (x + 1/x)² = 5²\nx² + (1/x²) + 2(x)(1/x) = 25\nx² + (1/x²) = 25 - 2 = 23.",
+        trap: "Do not forget to subtract 2 from 25."
+      },
+      {
+        id: "SSC_02",
+        exam: "SSC CGL / CHSL",
+        subject: "General Awareness",
+        format: "MCQ",
+        question: "Who was the Viceroy of India when the Indian National Congress was founded in 1885?",
+        options: [
+          { text: "Lord Dufferin", correct: true },
+          { text: "Lord Curzon", correct: false },
+          { text: "Lord Ripon", correct: false },
+          { text: "Lord Dalhousie", correct: false }
+        ],
+        solution: "The Indian National Congress was founded in December 1885 in Bombay during the viceroyalty of Lord Dufferin.",
+        trap: "Lord Curzon presided over the Partition of Bengal in 1905, not the 1885 founding of the INC."
+      },
+
+      // ================= 4. RAILWAYS (RRB NTPC) =================
+      // General Science & Speed Arithmetic
+      {
+        id: "RRB_01",
+        exam: "Railways (RRB NTPC)",
+        subject: "General Science",
+        format: "MCQ",
+        question: "What is the SI unit of electric potential difference (Voltage)?",
+        options: [
+          { text: "Volt (V)", correct: true },
+          { text: "Ampere (A)", correct: false },
+          { text: "Ohm (Ω)", correct: false },
+          { text: "Watt (W)", correct: false }
+        ],
+        solution: "Potential difference is measured in Volts (Joules per Coulomb). Ampere measures current; Ohm measures resistance.",
+        trap: "Do not confuse electrical potential (Volt) with electric power (Watt)."
+      },
+      {
+        id: "RRB_02",
+        exam: "Railways (RRB NTPC)",
+        subject: "Basic Mathematics",
+        format: "MCQ",
+        question: "A train 150 metres long passes a telephone pole in 15 seconds. What is the speed of the train in km/h?",
+        options: [
+          { text: "36 km/h", correct: true },
+          { text: "25 km/h", correct: false },
+          { text: "54 km/h", correct: false },
+          { text: "10 km/h", correct: false }
+        ],
+        solution: "Speed = Distance / Time = 150 m / 15 s = 10 m/s.\nConvert to km/h: 10 × (18/5) = 36 km/h.",
+        trap: "To convert m/s to km/h, multiply by 18/5 (not 5/18)."
+      },
+
+      // ================= 5. JEE MAIN =================
+      // Physics, Chemistry, Mathematics (Engineering Entrance)
+      {
+        id: "JEE_MAIN_01",
+        exam: "JEE Main",
+        subject: "Physics",
+        format: "MCQ",
+        question: "A proton and an alpha particle enter a uniform magnetic field with equal kinetic energies perpendicular to the field. What is the ratio of the radius of their circular paths (r_p : r_alpha)?",
+        options: [
+          { text: "1 : 1", correct: true },
+          { text: "1 : 2", correct: false },
+          { text: "2 : 1", correct: false },
+          { text: "1 : 4", correct: false }
+        ],
+        solution: "Radius r = p / (qB) = √(2mK) / (qB).\nFor proton: r_p ∝ √(m) / e.\nFor alpha particle (mass = 4m, charge = 2e): r_alpha ∝ √(4m) / (2e) = 2√(m) / (2e) = √(m) / e.\nTherefore, ratio r_p : r_alpha = 1 : 1.",
+        trap: "Alpha particle has charge +2e and mass 4m."
+      },
+      {
+        id: "JEE_MAIN_02",
+        exam: "JEE Main",
+        subject: "Chemistry",
+        format: "MCQ",
+        question: "For a first-order reaction, the time required for 99.9% completion is approximately how many times its half-life (t_1/2)?",
+        options: [
+          { text: "10 times", correct: true },
+          { text: "3 times", correct: false },
+          { text: "6.6 times", correct: false },
+          { text: "100 times", correct: false }
+        ],
+        solution: "t = (2.303 / k) × log₁₀[100 / (100 - 99.9)] = (2.303 / k) × 3.\nt_1/2 = (2.303 / k) × 0.3010.\nt_99.9% / t_1/2 = 3 / 0.3010 ≈ 9.966 ≈ 10 times.",
+        trap: "99% completion takes ~6.6 half-lives, but 99.9% takes 10 half-lives."
+      },
+
+      // ================= 6. JEE ADVANCED =================
+      {
+        id: "JEE_ADV_01",
+        exam: "JEE Advanced",
+        subject: "Physics",
+        format: "MCQ",
+        question: "An ideal gas undergoes an adiabatic expansion such that its volume doubles (V₂ = 2V₁). If the ratio of specific heats is γ = 1.5, by what factor does its temperature change (T₂ / T₁)?",
+        options: [
+          { text: "1 / √2", correct: true },
+          { text: "1 / 2", correct: false },
+          { text: "√2", correct: false },
+          { text: "2", correct: false }
+        ],
+        solution: "In adiabatic process: T × V^(γ - 1) = constant.\nT₂ / T₁ = (V₁ / V₂)^(γ - 1) = (1/2)^(1.5 - 1) = (1/2)^0.5 = 1 / √2.",
+        trap: "Remember the exponent on volume in the T-V relationship is (γ - 1), not γ."
+      },
+
+      // ================= 7. NEET UG =================
+      {
+        id: "NEET_UG_01",
+        exam: "NEET UG",
+        subject: "Biology",
+        format: "MCQ",
+        question: "Which of the following hormones is synthesized by the hypothalamus and stored/released by the Posterior Pituitary (Neurohypophysis)?",
+        options: [
+          { text: "Oxytocin and Vasopressin (ADH)", correct: true },
+          { text: "Prolactin and ACTH", correct: false },
+          { text: "Thyroid Stimulating Hormone (TSH)", correct: false },
+          { text: "Growth Hormone (GH)", correct: false }
+        ],
+        solution: "Oxytocin and Vasopressin (ADH) are synthesized in the hypothalamus and transported axonally to the posterior pituitary for release.",
+        trap: "The posterior pituitary stores hormones; it does not synthesize them."
+      },
+
+      // ================= 8. NEET PG / SS =================
+      {
+        id: "NEET_PG_01",
+        exam: "NEET PG / SS",
+        subject: "Clinical Pathology",
+        format: "MCQ",
+        question: "A peripheral blood smear demonstrates Reed-Sternberg cells with prominent owl-eye nucleoli. What is the most probable diagnosis?",
+        options: [
+          { text: "Hodgkin Lymphoma", correct: true },
+          { text: "Non-Hodgkin Lymphoma", correct: false },
+          { text: "Multiple Myeloma", correct: false },
+          { text: "Burkitt Lymphoma", correct: false }
+        ],
+        solution: "Reed-Sternberg cells (binucleated or multinucleated giant cells with owl-eye appearance) are the hallmark histopathological feature of Hodgkin Lymphoma.",
+        trap: "Burkitt lymphoma shows a 'starry-sky' appearance, not Reed-Sternberg cells."
+      }
+    ];
+
+    // Track served question history to prevent loops
+    let servedSchoolIndices = [];
+    let servedCompIndices = [];
+
+    // -------------------------------------------------------------
+    // INITIALIZATION & LIFECYCLE
+    // -------------------------------------------------------------
+    window.addEventListener('DOMContentLoaded', () => {
+      syncWalletDisplay();
+      generateRandomQuizQuestion(true);
+      renderActiveCompQuestion(true);
+
+      document.addEventListener('click', (e) => {
+        const menu = document.getElementById('threeDotDropdown');
+        const btn = document.getElementById('threeDotBtn');
+        if (!btn.contains(e.target) && !menu.contains(e.target)) {
+          menu.classList.add('hidden');
+        }
+      });
+    });
+
+    function navigateTo(pageId) {
+      document.querySelectorAll('.app-page').forEach(page => page.classList.add('hidden'));
+      const target = document.getElementById(`page-${pageId}`);
+      if (target) target.classList.remove('hidden');
+
+      document.querySelectorAll('.page-nav-btn').forEach(btn => {
+        if (btn.dataset.page === pageId) {
+          btn.className = "page-nav-btn px-3 py-1.5 rounded-lg font-semibold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 cursor-pointer";
+        } else {
+          btn.className = "page-nav-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 cursor-pointer";
+        }
+      });
+
+      document.getElementById('threeDotDropdown').classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function switchAskOrQuiz(modePage) {
+      navigateTo(modePage);
+      const askBtn = document.getElementById('navBtnAsk');
+      const quizBtn = document.getElementById('navBtnQuiz');
+
+      if (modePage === 'ask-center') {
+        askBtn.className = "px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-emerald-600 text-white shadow-sm shadow-emerald-600/40 cursor-pointer";
+        quizBtn.className = "px-4 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-slate-100 transition flex items-center gap-1.5 cursor-pointer";
+      } else {
+        quizBtn.className = "px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-cyan-600 text-white shadow-sm shadow-cyan-600/40 cursor-pointer";
+        askBtn.className = "px-4 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-slate-100 transition flex items-center gap-1.5 cursor-pointer";
+      }
+    }
+
+    function toggleThreeDotMenu() {
+      const menu = document.getElementById('threeDotDropdown');
+      menu.classList.toggle('hidden');
+    }
+
+    function syncWalletDisplay() {
+      document.getElementById('walletSchoolPoints').textContent = appState.user.schoolPoints.toLocaleString();
+      document.getElementById('walletCompPoints').textContent = appState.user.compPoints.toLocaleString();
+      document.getElementById('compWalletPill').textContent = appState.user.compPoints.toLocaleString();
+      document.getElementById('navSubtext').textContent = `${appState.user.activeBoard} • ${appState.user.activeClass} • Ready`;
+      document.getElementById('labelActiveBoard').textContent = appState.user.activeBoard;
+      document.getElementById('labelActiveGrade').textContent = appState.user.activeClass;
+    }
+
+    function deductPoints(amount, type = 'school') {
+      if (type === 'school') {
+        if (appState.user.schoolPoints < amount) {
+          showToast("Insufficient School Points! Please recharge.");
+          navigateTo('subscription-store');
+          return false;
+        }
+        appState.user.schoolPoints -= amount;
+        addLedgerEntry(`Academic Query`, `-${amount} School Pts`);
+      } else {
+        if (appState.user.compPoints < amount) {
+          showToast("Insufficient Competitive Points (Needs " + amount + " pts)! Please recharge.");
+          navigateTo('subscription-store');
+          return false;
+        }
+        appState.user.compPoints -= amount;
+        addLedgerEntry(`Competitive Doubt / Query`, `-${amount} Comp Pts`);
+      }
+      syncWalletDisplay();
+      return true;
+    }
+
+    function addLedgerEntry(label, pts) {
+      appState.transactions.unshift({ label, pts });
+      const ledger = document.getElementById('transactionLedger');
+      if (ledger) {
+        const item = document.createElement('div');
+        item.className = "p-2 rounded bg-slate-900 border border-slate-800 flex justify-between";
+        item.innerHTML = `<span>${label}</span><span class="${pts.startsWith('+') ? 'text-emerald-400' : 'text-cyan-400'}">${pts}</span>`;
+        ledger.prepend(item);
+      }
+    }
+
+    function claimDailyBonus() {
+      appState.user.schoolPoints += 300;
+      addLedgerEntry("Daily Replenishment", "+300 School Pts");
+      syncWalletDisplay();
+      showToast("+300 Points Added to Wallet!");
+    }
+
+    function simulatePurchase(planName, points, cost) {
+      appState.user.schoolPoints += points;
+      appState.user.compPoints += Math.floor(points / 3);
+      addLedgerEntry(`Upgrade: ${planName}`, `+${points} Pts`);
+      syncWalletDisplay();
+      showToast(`Activated ${planName} for ₹${cost}!`);
+    }
+
+    // -------------------------------------------------------------
+    // DYNAMIC SCHOOL QUIZ ARENA (Strictly Rotates & Respects Filters)
+    // -------------------------------------------------------------
+    function generateRandomQuizQuestion(forceNext = false) {
+      const selectedBoard = document.getElementById('quizBoardSelect').value;
+      const selectedGrade = document.getElementById('quizGradeSelect').value;
+      const selectedSubject = document.getElementById('quizSubjectSelect').value;
+      const selectedType = document.getElementById('quizTypeSelect').value;
+
+      let filtered = SCHOOL_QUESTION_BANK;
+
+      if (selectedBoard !== "All") {
+        filtered = filtered.filter(q => q.board === selectedBoard);
+      }
+      if (selectedGrade !== "All") {
+        filtered = filtered.filter(q => q.grade === selectedGrade);
+      }
+      if (selectedSubject !== "All") {
+        filtered = filtered.filter(q => q.subject === selectedSubject);
+      }
+      if (selectedType !== "All") {
+        filtered = filtered.filter(q => q.type === selectedType);
+      }
+
+      // Fallback to broader category if combination is overly restrictive
+      if (filtered.length === 0) {
+        filtered = SCHOOL_QUESTION_BANK;
+      }
+
+      // Rotate without repeating identical question in succession
+      let unserved = filtered.filter(q => !servedSchoolIndices.includes(q.id));
+      if (unserved.length === 0) {
+        servedSchoolIndices = [];
+        unserved = filtered;
+      }
+
+      const q = unserved[Math.floor(Math.random() * unserved.length)];
+      servedSchoolIndices.push(q.id);
+
+      const container = document.getElementById('quizQuestionCard');
+      container.innerHTML = `
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-800">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${q.board}</span>
+            <span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">${q.grade}</span>
+            <span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-purple-500/10 text-purple-400 border border-purple-500/20">${q.subject}</span>
+            <span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">${q.type}</span>
+          </div>
+        </div>
+
+        <div class="text-base sm:text-lg font-medium text-slate-100 leading-relaxed">
+          ${q.question}
+        </div>
+
+        <div id="quizOptionsBlock" class="space-y-2.5">
+          ${renderQuizInteractiveBody(q)}
+        </div>
+
+        <div id="quizSolutionCard" class="hidden p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 font-mono text-xs">
+          <div class="text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-check-double"></i> Complete Official Derivation &amp; Answer
+          </div>
+          <pre class="text-slate-300 whitespace-pre-line leading-relaxed">${q.solution}</pre>
+          <div class="p-3 rounded-lg bg-rose-950/40 border border-rose-900/60 text-rose-300 text-[11px]">
+            <strong>Syllabus Warning:</strong> ${q.trap}
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+          <button onclick="document.getElementById('quizSolutionCard').classList.toggle('hidden')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition cursor-pointer">
+            Reveal / Toggle Derivation
+          </button>
+          <button onclick="generateRandomQuizQuestion(true)" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition cursor-pointer flex items-center gap-2">
+            <span>Next Challenge</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      `;
+    }
+
+    function renderQuizInteractiveBody(item) {
+      if (item.options && item.options.length > 0) {
+        return item.options.map((opt, i) => `
+          <button onclick="handleOptionClick(${opt.correct}, this)" class="w-full text-left p-3.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-slate-600 text-slate-200 text-xs sm:text-sm font-medium transition flex items-center justify-between cursor-pointer">
+            <div class="flex items-center gap-3">
+              <span class="w-6 h-6 rounded bg-slate-900 border border-slate-700 flex items-center justify-center font-mono text-xs text-slate-400">${String.fromCharCode(65 + i)}</span>
+              <span>${opt.text}</span>
+            </div>
+            <i class="fa-solid fa-chevron-right text-slate-700 text-xs"></i>
+          </button>
+        `).join('');
+      } else {
+        return `
+          <div class="space-y-3">
+            <textarea placeholder="Write out your step-by-step arithmetic or subjective answer..." rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"></textarea>
+            <button onclick="document.getElementById('quizSolutionCard').classList.remove('hidden'); showToast('Subjective answer submitted!');" class="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition cursor-pointer">
+              Submit &amp; Compare Steps
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    function handleOptionClick(isCorrect, btn) {
+      document.querySelectorAll('#quizOptionsBlock button').forEach(b => b.disabled = true);
+      if (isCorrect) {
+        btn.classList.add('bg-emerald-950/80', 'border-emerald-500', 'text-emerald-200');
+        showToast("Correct Answer! +10 Points Earned");
+        appState.user.schoolPoints += 10;
+        syncWalletDisplay();
+      } else {
+        btn.classList.add('bg-rose-950/80', 'border-rose-500', 'text-rose-200');
+        showToast("Incorrect. Check the derivation.");
+      }
+      document.getElementById('quizSolutionCard').classList.remove('hidden');
+    }
+
+    // -------------------------------------------------------------
+    // DYNAMIC COMPETITIVE WING (Syllabus Strictly Filtered)
+    // -------------------------------------------------------------
+    function selectCompExam(examName) {
+      appState.user.activeCompExam = examName;
+      document.getElementById('compTargetBadge').textContent = examName;
+      document.getElementById('compDoubtContext').textContent = `Specialized doubt solver tuned to ${examName} syllabus`;
+
+      document.querySelectorAll('.comp-badge-btn').forEach(b => {
+        b.classList.remove('bg-cyan-950/40', 'border-cyan-500');
+        b.classList.add('bg-slate-950', 'border-slate-800');
+      });
+      const activeBtn = document.getElementById(`btnComp-${examName}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-slate-950', 'border-slate-800');
+        activeBtn.classList.add('bg-cyan-950/40', 'border-cyan-500');
+      }
+
+      showToast(`Selected Exam: ${examName}`);
+      renderActiveCompQuestion(true);
+    }
+
+    function switchCompSubTab(tabName) {
+      const views = ['quiz', 'doubt', 'material'];
+      views.forEach(v => {
+        document.getElementById(`compSubView-${v}`).classList.add('hidden');
+        const b = document.getElementById(`compTabBtn-${v}`);
+        b.className = "px-4 py-2 rounded-xl font-semibold text-slate-400 hover:text-white bg-slate-800/80 transition cursor-pointer flex items-center gap-2";
+      });
+
+      document.getElementById(`compSubView-${tabName}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`compTabBtn-${tabName}`);
+      activeBtn.className = "px-4 py-2 rounded-xl font-bold bg-cyan-600 text-white transition cursor-pointer flex items-center gap-2";
+    }
+
+    function renderActiveCompQuestion(forceNext = false) {
+      const exam = appState.user.activeCompExam;
+
+      // Strictly pull questions designed specifically for this exam
+      let list = COMP_QUESTIONS_REPOSITORY.filter(q => q.exam === exam);
+      if (list.length === 0) {
+        list = COMP_QUESTIONS_REPOSITORY;
+      }
+
+      let unserved = list.filter(q => !servedCompIndices.includes(q.id));
+      if (unserved.length === 0) {
+        servedCompIndices = [];
+        unserved = list;
+      }
+
+      const q = unserved[Math.floor(Math.random() * unserved.length)];
+      servedCompIndices.push(q.id);
+
+      const card = document.getElementById('compActiveQuestionCard');
+      card.innerHTML = `
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-800">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">${q.exam}</span>
+            <span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-purple-500/10 text-purple-400 border border-purple-500/20">${q.subject}</span>
+            <span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">${q.format}</span>
+          </div>
+        </div>
+
+        <div class="text-sm sm:text-base font-medium text-slate-100 leading-relaxed whitespace-pre-line">
+          ${q.question}
+        </div>
+
+        <div id="compInteractiveBlock" class="space-y-2.5">
+          ${renderCompInteractiveInput(q)}
+        </div>
+
+        <div id="compSolutionCard" class="hidden p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3 font-mono text-xs">
+          <div class="text-cyan-400 font-bold uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-calculator"></i> Step-by-Step Derivation &amp; Syllabus Logic
+          </div>
+          <pre class="text-slate-300 whitespace-pre-line leading-relaxed">${q.solution}</pre>
+          <div class="p-3 rounded-lg bg-rose-950/40 border border-rose-900/60 text-rose-300 text-[11px]">
+            <strong>Exam Pitfall:</strong> ${q.trap}
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+          <button onclick="document.getElementById('compSolutionCard').classList.toggle('hidden')" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-bold transition cursor-pointer border border-slate-800">
+            Reveal / Toggle Derivation
+          </button>
+          <button onclick="nextCompQuestion()" class="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition cursor-pointer flex items-center gap-2">
+            <span>Next Exam Problem</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      `;
+    }
+
+    function renderCompInteractiveInput(q) {
+      if (q.options) {
+        return q.options.map((opt, i) => `
+          <button onclick="handleCompOptionClick(${opt.correct}, this)" class="w-full text-left p-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500 text-slate-200 text-xs sm:text-sm font-medium transition flex items-center justify-between cursor-pointer">
+            <div class="flex items-center gap-3">
+              <span class="w-6 h-6 rounded bg-slate-950 border border-slate-800 flex items-center justify-center font-mono text-xs text-slate-400">${String.fromCharCode(65 + i)}</span>
+              <span>${opt.text}</span>
+            </div>
+            <i class="fa-solid fa-chevron-right text-slate-700 text-xs"></i>
+          </button>
+        `).join('');
+      }
+      return '';
+    }
+
+    function handleCompOptionClick(isCorrect, btn) {
+      document.querySelectorAll('#compInteractiveBlock button').forEach(b => b.disabled = true);
+      if (isCorrect) {
+        btn.classList.add('bg-cyan-950/80', 'border-cyan-500', 'text-cyan-200');
+        showToast("Correct! +15 Competitive Points Earned");
+        appState.user.compPoints += 15;
+        syncWalletDisplay();
+      } else {
+        btn.classList.add('bg-rose-950/80', 'border-rose-500', 'text-rose-200');
+        showToast("Incorrect. Study the derivation below.");
+      }
+      document.getElementById('compSolutionCard').classList.remove('hidden');
+    }
+
+    function nextCompQuestion() {
+      renderActiveCompQuestion(true);
+    }
+
+    // -------------------------------------------------------------
+    // COMPETITIVE DOUBT CHAT CENTER (-25 Points)
+    // -------------------------------------------------------------
+    function handleSendCompDoubt(e) {
+      e.preventDefault();
+      const input = document.getElementById('compDoubtInput');
+      const query = input.value.trim();
+      if (!query) return;
+
+      if (!deductPoints(25, 'comp')) return;
+
+      const chatBox = document.getElementById('compDoubtHistory');
+
+      const userBubble = document.createElement('div');
+      userBubble.className = "flex items-start gap-3 justify-end";
+      userBubble.innerHTML = `
+        <div class="bg-cyan-600/90 text-white rounded-2xl rounded-tr-none p-3.5 max-w-lg shadow-md leading-relaxed">
+          ${query}
+        </div>
+        <div class="w-8 h-8 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs text-cyan-400 shrink-0">You</div>
+      `;
+      chatBox.appendChild(userBubble);
+      input.value = "";
+
+      setTimeout(() => {
+        const aiBubble = document.createElement('div');
+        aiBubble.className = "flex items-start gap-3";
+        aiBubble.innerHTML = `
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-500 flex items-center justify-center font-bold text-xs text-white shrink-0">R</div>
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-none p-4 max-w-2xl text-slate-200 leading-relaxed shadow-lg space-y-2">
+            <div class="font-bold text-cyan-400">[Rudra's Competitive Solver · ${appState.user.activeCompExam} Engine]</div>
+            <p>Target Problem: <span class="text-white font-medium">"${query}"</span></p>
+            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 font-mono text-xs text-slate-300">
+              1. Syllabic Principle: Applied official standard examination framework.<br>
+              2. Analytical Derivation: Formulated equilibrium steps and unit checks.<br>
+              3. Exam Shortcut: Process of elimination applied.
+            </div>
+            <p class="text-[11px] text-slate-400">25 Competitive Points deducted. Current balance: ${appState.user.compPoints} Comp Pts.</p>
+          </div>
+        `;
+        chatBox.appendChild(aiBubble);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 500);
+    }
+
+    // -------------------------------------------------------------
+    // SCHOOL CHAT HANDLER
+    // -------------------------------------------------------------
+    function handleSendQuery(e) {
+      e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const query = input.value.trim();
+      if (!query) return;
+
+      if (!deductPoints(20, 'school')) return;
+
+      const chatBox = document.getElementById('chatHistory');
+      const userBubble = document.createElement('div');
+      userBubble.className = "flex items-start gap-3 justify-end";
+      userBubble.innerHTML = `
+        <div class="bg-emerald-600/90 text-white rounded-2xl rounded-tr-none p-3.5 max-w-lg shadow-md leading-relaxed">
+          ${query}
+        </div>
+        <div class="w-8 h-8 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs text-emerald-400 shrink-0">You</div>
+      `;
+      chatBox.appendChild(userBubble);
+      input.value = "";
+
+      setTimeout(() => {
+        const aiBubble = document.createElement('div');
+        aiBubble.className = "flex items-start gap-3";
+        aiBubble.innerHTML = `
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center font-bold text-xs text-white shrink-0">R</div>
+          <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl rounded-tl-none p-4 max-w-2xl text-slate-200 leading-relaxed shadow-lg space-y-2">
+            <div class="font-bold text-emerald-400">[Rudra's AI · ${appState.user.activeBoard} ${appState.user.activeClass} Engine]</div>
+            <p>Analyzed Query: <span class="text-white font-medium">"${query}"</span></p>
+            <div class="p-3 bg-slate-900 rounded-xl border border-slate-700 font-mono text-xs text-slate-300">
+              1. Syllabic Principle: Applied standard curriculum formulation.<br>
+              2. Derivation / Steps: Evaluated step-by-step arithmetic.<br>
+              3. Final Check: Verified unit consistency.
+            </div>
+            <p class="text-xs text-slate-400">20 School Points deducted. Remaining balance: ${appState.user.schoolPoints} Pts.</p>
+          </div>
+        `;
+        chatBox.appendChild(aiBubble);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 500);
+    }
+
+    // -------------------------------------------------------------
+    // BOARD STUDIO CONFIG
+    // -------------------------------------------------------------
+    function toggleEditConfig() {
+      appState.user.isConfigLocked = !appState.user.isConfigLocked;
+      const fields = document.querySelectorAll('.config-field');
+      fields.forEach(f => f.disabled = appState.user.isConfigLocked);
+
+      const btn = document.getElementById('btnEditBoardConfig');
+      btn.innerHTML = appState.user.isConfigLocked 
+        ? `<i class="fa-solid fa-pen-to-square"></i> Edit` 
+        : `<i class="fa-solid fa-lock-open text-amber-400"></i> Editing...`;
+    }
+
+    function saveBoardConfig() {
+      const selectedBoard = document.querySelector('input[name="boardChoice"]:checked')?.value || "ICSE";
+      const selectedGrade = document.querySelector('input[name="classChoice"]:checked')?.value || "Class 8";
+
+      appState.user.activeBoard = selectedBoard;
+      appState.user.activeClass = selectedGrade;
+      appState.user.isConfigLocked = true;
+
+      const fields = document.querySelectorAll('.config-field');
+      fields.forEach(f => f.disabled = true);
+      document.getElementById('btnEditBoardConfig').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Edit`;
+
+      // Sync School Quiz Arena selectors to match
+      const boardSelect = document.getElementById('quizBoardSelect');
+      const gradeSelect = document.getElementById('quizGradeSelect');
+      if (boardSelect) boardSelect.value = selectedBoard;
+      if (gradeSelect) gradeSelect.value = selectedGrade;
+
+      syncWalletDisplay();
+      generateRandomQuizQuestion(true);
+      showToast(`Settings Saved: ${selectedBoard} (${selectedGrade})`);
+    }
+
+    function handlePostFeedback(e) {
+      e.preventDefault();
+      const name = document.getElementById('feedbackName').value.trim();
+      const cat = document.getElementById('feedbackCategory').value;
+      const comment = document.getElementById('feedbackComment').value.trim();
+
+      if (!name || !comment) return;
+
+      const list = document.getElementById('feedbackList');
+      const card = document.createElement('div');
+      card.className = "p-3 rounded-xl bg-slate-950 border border-slate-800";
+      card.innerHTML = `
+        <div class="flex justify-between items-center mb-1">
+          <span class="font-bold text-cyan-400">${name} (${cat})</span>
+          <span class="text-slate-500 text-[10px]">Just now</span>
+        </div>
+        <p class="text-slate-300">${comment}</p>
+      `;
+      list.prepend(card);
+
+      document.getElementById('feedbackName').value = "";
+      document.getElementById('feedbackComment').value = "";
+      showToast("Thank you! Review posted.");
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastMessage').textContent = msg;
+      toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-[-100px]', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
